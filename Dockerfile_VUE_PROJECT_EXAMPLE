@@ -1,0 +1,40 @@
+#---------------------------------------------------------------------------------
+# Dockefile to build Docker Image of NodeJS plus VUE WebServer running on Ubuntu
+#
+# If your vue simple project isn't created yet then run:
+#   npm install -g vue-cli
+#   vue init webpack [project_name]
+#   cd [project_name]
+#   npm install
+# 
+# Don't forget remane this file from Dockerfile_VUE_PROJECT_EXAMPLE to Dockerfile
+# After run:
+#   docker build -t [container_name] .
+#   docker run -it -p 8080:8080 [container_name]
+# Check: ex http://localhost:8080/
+#
+# Made by Max Stem STEMAX  27-May-2020
+#---------------------------------------------------------------------------------
+
+FROM node:lts-alpine
+
+# install simple HTTP-server
+RUN npm install -g http-server
+
+# set 'app' as working directory
+WORKDIR /app
+
+# copy 'package.json' & 'package-lock.json'
+COPY package*.json ./
+
+# set npm
+RUN npm install
+
+# copy all files
+COPY . .
+
+# build app for production with minification
+RUN npm run build
+
+EXPOSE 8080
+CMD [ "http-server", "dist" ]
