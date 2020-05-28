@@ -1,0 +1,26 @@
+
+#---------------------------------------------------------------------------------
+# Dockefile to build Docker Image of WebServer with Symfony
+# 
+# Don't forget remane this file from Dockerfile_Symfony_PROJECT_EXAMPLE to Dockerfile
+# After run:
+#   docker build . --tag "symfony"
+#   docker run -d --name symfony_demo symfony
+#   docker cp symfony_demo:/var/www .   
+#   docker rm -f symfony_demo
+#   docker run -d -p 8080:8080 --name symfony_demo -v $(pwd)/www:/var/www symfony
+# Check: ex http://localhost:8080/
+#
+# Made by Max Stem STEMAX  28-May-2020
+#---------------------------------------------------------------------------------
+
+FROM php:latest
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN apt-get update && apt-get install -y git libpng12-dev
+RUN docker-php-ext-install zip && docker-php-ext-enable zip
+RUN mkdir -p /var/www
+RUN composer create-project symfony/framework-standard-edition /var/www/
+RUN chmod +x /var/www/bin/console
+EXPOSE 8080
+CMD /var/www/bin/console server:run 0.0.0.0:8080
+VOLUME /var/www/
