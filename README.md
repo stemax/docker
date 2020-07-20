@@ -50,3 +50,5 @@ ___
 
 ```docker rmi [image_id] # delete image```
 
+```docker exec -ti container_name sh```
+
