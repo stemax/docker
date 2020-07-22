@@ -50,5 +50,7 @@ ___
 
 ```docker rmi [image_id] # delete image```
 
-```docker exec -ti container_name sh```
+```docker exec -ti [container_id] sh```
+
+ ```docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' [container_id] #get ip for conteiner```
 
